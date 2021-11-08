@@ -32,7 +32,7 @@ class UserTest extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['address'], 'string'],
             [['age', 'version_no'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 32],
         ];
     }
 
@@ -67,6 +67,20 @@ class UserTest extends \yii\db\ActiveRecord
             return $exception->getMessage();
         }
 
+
+    }
+
+    public function doTrans($id){
+        $db = Yii::$app->db->beginTransaction();
+        try{
+            $user = self::findOne($id);
+            $user->age = 88;
+            $user->save();
+            $db->commit();
+        }catch (\Exception $exception){
+            $db->rollBack();
+            return $exception->getMessage();
+        }
 
     }
 }
