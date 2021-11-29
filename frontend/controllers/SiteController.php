@@ -5,6 +5,7 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -58,13 +59,28 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+//                'class' => 'yii\web\ErrorAction',
+                'class' =>  'frontend\actions\ErrorApiAction',
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    /**
+     * 只能重定向错误页面
+     * @return string|void
+     */
+    public function actionError()
+    {
+        var_dump(23232);
+        $exception = Yii::$app->errorHandler->exception;
+
+        if ($exception !== null) {
+            return $this->render('error', ['exception' => $exception]);
+        }
     }
 
     /**

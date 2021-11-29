@@ -10,7 +10,9 @@ namespace frontend\controllers;
 
 
 use app\models\UserTest;
+use common\exceptions\TemporaryException;
 use common\helpers\DbHelper;
+use common\jobs\DownloadJob;
 use Exception;
 use Yii;
 use yii\web\Controller;
@@ -30,6 +32,7 @@ class UserController extends Controller
     }
 
     /**
+     * my.demo.test/user/db-trans
      * 嵌套事务测试
      * @throws \yii\db\Exception
      */
@@ -46,6 +49,17 @@ class UserController extends Controller
             var_dump($exception->getMessage());
         }
         var_dump(1111);
+
+    }
+
+    public function actionJob(){
+
+        Yii::$app->queue->delay(1 * 60)->push(new DownloadJob([
+            'url' => 'http://example.com/image.jpg',
+            'file' => '/tmp/image.jpg',
+        ]));
+        throw new TemporaryException("具体的非法描述", 4001);
+        var_dump(1121);
 
     }
 }
