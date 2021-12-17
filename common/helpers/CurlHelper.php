@@ -50,6 +50,7 @@ class CurlHelper
 
 
     /**
+     * 文档地址： https://developers.dingtalk.com/document/robots/monitoring-and-alerting
      * @param        $content
      * @param string $signText 文本签名 [预警, 提醒, 报警] 必须是这几个类型，与在钉钉配置机器人时的一直，否则报错30001错误码
      * @param array $phone

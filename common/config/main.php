@@ -9,5 +9,13 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        //Yii2 配置接收 json参数
+        'request' => [
+            'enableCookieValidation' => true,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
+        ],
+
     ],
 ];

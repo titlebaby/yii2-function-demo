@@ -19,6 +19,7 @@ class ErrorApiAction extends ErrorAction
         Yii::$app-> getResponse()-> format = Response::FORMAT_JSON;
         // 返回的内容数据
         if ($this->exception instanceof TemporaryException) {
+            var_dump("分类处理");
             return $this->exception->getMessage();
         }
         return [

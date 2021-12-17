@@ -15,6 +15,23 @@ use Yii;
  */
 class UserTest extends \yii\db\ActiveRecord
 {
+    const SCENARIO_INSERT = 'insert';
+    const SCENARIO_UPDATE = 'update';
+    const SCENARIO_DEL = 'del';
+    const SCENARIO_DETAIL = 'detail';
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTER = 'register';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_REGISTER] = ['name', 'address','age','password'];
+        $scenarios[self::SCENARIO_UPDATE] = ['name', 'address','age','password'];
+        $scenarios[self::SCENARIO_LOGIN] = ['name', 'password'];
+        $scenarios[self::SCENARIO_DEL] = ['id'];
+        $scenarios[self::SCENARIO_DETAIL] = ['id'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */
@@ -29,10 +46,11 @@ class UserTest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['address'], 'string'],
-            [['age', 'version_no'], 'integer'],
-            [['name'], 'string', 'max' => 32],
+            // 在"register" 场景下 username, email 和 password 必须有值
+            [['name', 'address','age','password'], 'required', 'on' => 'register'],
+
+            // 在 "login" 场景下 username 和 password 必须有值
+            [['user', 'password'], 'required', 'on' => 'login'],
         ];
     }
 
